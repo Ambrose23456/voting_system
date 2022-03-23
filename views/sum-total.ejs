@@ -1,0 +1,80 @@
+<%- include("layouts/header") -%>
+
+    <div class="container">
+
+        <h1>Sum total of any lga polling center</h1>
+        <div class="row">
+            <div class="col-md-6">
+                <% if(results.length > 0){ %> 
+                    <select class="form-control" id="states">
+                        <option selected disabled>-- select state --</option>
+                        <% results.forEach(function(data) { %>
+
+                            <option value="<%= data.state_id %>">
+                                <%= data.state_name %> 
+                            </option>
+                        <% }) %> 
+                    </select>
+                <% } %> 
+            </div>
+            <div class="col-md-6">
+                <select id="lgas" class="form-control">
+                    <option selected disabled>-- select lga --</option>
+                </select>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-12">
+                <div id="sum-total" class="alert alert-secondary"></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const stateSelect = document.getElementById("states")
+        const lgaSelect = document.getElementById("lgas")
+        const sumTotal = document.getElementById("sum-total")
+
+        async function getLgas(state_id) {
+            try {
+                const res = await fetch(`/api/state/${state_id}/lgas`)
+                const data = await res.json()
+                if(data.status === true) {
+                    lgaSelect.innerHTML = ""
+                    lgaSelect.innerHTML = "<option selected disabled>-- select lga --</option>"
+
+                    data.results.forEach(item => {
+                        lgaSelect.innerHTML += `<option value="${ item.lga_id }">${ item.lga_name }</option>`
+                    })
+                } else {
+                    throw new Error(data.message)
+                }
+            } catch(error) {
+                console.log(error.message)
+                alert("An error may occured")
+            }
+        }
+
+        async function getSumTotal(lga_id) {
+            try {
+                const res = await fetch(`/api/lga/${lga_id}/sum-total`)
+                const data = await res.json()
+                if(data.status === true && data.result) {
+                    sumTotal.innerHTML = `Sum total is: ${data.result}`
+                } else {
+                    sumTotal.innerHTML = "No result"
+                    alert("No result found")
+                }
+            } catch(error) {
+                alert("An error may occured")
+            }
+        }
+
+        stateSelect.addEventListener("change", e => {
+            getLgas(e.target.value)
+        })
+
+        lgaSelect.addEventListener("change", e => {
+            getSumTotal(e.target.value)
+        })
+    </script>
+<%- include("layouts/footer") %> 

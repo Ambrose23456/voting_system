@@ -1,0 +1,13 @@
+<%- include("layouts/header") -%>
+
+    <div class="container">
+        <h1 class="text-danger">Error</h1>
+        <div class="alert alert-danger">
+            <% if(msg){ %> 
+                <%= msg %> 
+            <% } else { %> 
+                <span>Something went wrong</span>
+            <% } %> 
+        </div>
+    </div>
+<%- include("layouts/footer") %> 

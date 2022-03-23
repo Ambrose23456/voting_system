@@ -1,0 +1,17 @@
+<%- include("layouts/header") -%>
+
+    <div class="container">
+
+        <h1>LGAs</h1>
+
+        <div class="list-group">
+            <% if(results.length > 0){ %> 
+                <% results.forEach(function(data) { %>
+                    <a href="/polling-units/<%= data.lga_id %>" class="list-group-item list-group-item-action">
+                        <%= data.lga_name %> 
+                    </a>
+                <% }) %> 
+            <% } %> 
+        </div>
+    </div>
+<%- include("layouts/footer") %> 

@@ -1,0 +1,16 @@
+<%- include("layouts/header") -%>
+
+    <div class="container">
+
+        <h1>States</h1>
+        <div class="list-group">
+            <% if(results.length > 0){ %> 
+                <% results.forEach(function(data) { %>
+                    <a href="/lga/<%= data.state_id %>" class="list-group-item list-group-item-action">
+                        <%= data.state_name %> 
+                    </a>
+                <% }) %> 
+            <% } %> 
+        </div>
+    </div>
+<%- include("layouts/footer") %> 
